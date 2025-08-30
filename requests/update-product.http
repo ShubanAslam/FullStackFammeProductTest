@@ -1,0 +1,4 @@
+POST {{HOST}}/update/123
+Content-Type: application/x-www-form-urlencoded
+
+title=Updated+Product&handle=updated-product&vendor=UpdatedVendor&productType=UpdatedType&variants=[{"id":1,"title":"Updated"}]

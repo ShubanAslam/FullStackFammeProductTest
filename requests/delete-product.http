@@ -1,0 +1,2 @@
+POST {{HOST}}/delete/123
+Content-Type: text/html

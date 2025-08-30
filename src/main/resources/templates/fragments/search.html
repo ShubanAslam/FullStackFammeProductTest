@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Search</title>
+    <script src="/webjars/htmx.org/1.9.12/htmx.min.js"></script>
+    <script type="module" src="https://unpkg.com/@web-awesome/web-awesome@1.0.1/dist/web-awesome/web-awesome.esm.js"></script>
+    <style>
+        /* Same styles as products.html */
+    </style>
+</head>
+<body>
+<h1>Search Products</h1>
+<div>
+    <input type="search"
+           name="title"
+           placeholder="Search by title..."
+           hx-get="/products/search"
+           hx-trigger="keyup changed delay:300ms, search"
+           hx-target="#search-results"
+           hx-indicator="#loading-spinner">
+    <div id="loading-spinner" class="htmx-indicator">Loading...</div>
+</div>
+
+<div id="search-results">
+</div>
+</body>
+</html>

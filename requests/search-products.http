@@ -1,0 +1,2 @@
+GET {{HOST}}/search-products?query=test
+Content-Type: text/html

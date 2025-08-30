@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Famme Products</title>
+
+    <!-- HTMX -->
+    <script src="/webjars/htmx.org/2.0.2/dist/htmx.min.js"></script>
+
+    <style>
+        :root {
+            --wa-color-primary: #28a745;
+            --wa-color-primary-50: #eaf4ea;
+            --wa-color-primary-base: #28a745;
+            --wa-color-primary-dark: #218838;
+            --wa-color-danger-base: #dc3545;
+            --wa-color-danger-dark: #c82333;
+            --wa-color-secondary: #6c757d;
+            --wa-color-secondary-dark: #5a6268;
+
+            --wa-size-2: 0.5rem;
+            --wa-size-3: 0.75rem;
+            --wa-size-4: 1rem;
+            --wa-size-5: 1.25rem;
+            --wa-size-6: 1.5rem;
+
+            --wa-font-family-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            --wa-color-base-100: #f9f9f9;
+            --wa-color-base-white: #ffffff;
+            --wa-color-base-700: #333;
+            --wa-border-radius-lg: 10px;
+            --wa-border-radius-sm: 4px;
+            --wa-color-base-50: #f8f8f8;
+            --wa-color-border-subtle: #ddd;
+            --wa-shadow-sm: 0 4px 10px rgba(0,0,0,0.05);
+            --wa-font-weight-medium: 500;
+        }
+
+        body {
+            font-family: var(--wa-font-family-sans);
+            background-color: var(--wa-color-base-100);
+            padding: var(--wa-size-6);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: var(--wa-size-6);
+            color: var(--wa-color-base-700);
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: var(--wa-color-base-white);
+            padding: var(--wa-size-6);
+            border-radius: var(--wa-border-radius-lg);
+            box-shadow: var(--wa-shadow-sm);
+        }
+
+        .centered-button {
+            text-align: center;
+            margin-bottom: var(--wa-size-6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--wa-size-6);
+            border-radius: var(--wa-border-radius-lg);
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: var(--wa-size-3) var(--wa-size-4);
+            text-align: left;
+            border-bottom: 1px solid var(--wa-color-border-subtle);
+        }
+
+        th {
+            background-color: var(--wa-color-primary);
+            color: var(--wa-color-base-white);
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--wa-color-base-50);
+        }
+
+        tr:hover {
+            background-color: var(--wa-color-primary-50);
+        }
+
+        img {
+            max-width: 60px;
+            border-radius: var(--wa-border-radius-sm);
+        }
+
+        form {
+            background-color: var(--wa-color-base-white);
+            padding: var(--wa-size-6);
+            border-radius: var(--wa-border-radius-lg);
+            box-shadow: var(--wa-shadow-sm);
+            margin-top: var(--wa-size-6);
+        }
+
+        label {
+            display: block;
+            margin-bottom: var(--wa-size-4);
+            font-weight: var(--wa-font-weight-medium);
+        }
+
+        .form-group {
+            margin-bottom: var(--wa-size-4);
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: var(--wa-size-3);
+            border: 1px solid var(--wa-color-border-subtle);
+            border-radius: var(--wa-border-radius-sm);
+            font-family: var(--wa-font-family-sans);
+            font-size: var(--wa-size-4);
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--wa-color-primary);
+            box-shadow: 0 0 0 3px var(--wa-color-primary-50);
+        }
+
+        button {
+            padding: var(--wa-size-3) var(--wa-size-4);
+            border: none;
+            border-radius: var(--wa-border-radius-sm);
+            font-family: var(--wa-font-family-sans);
+            font-size: var(--wa-size-4);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button.primary {
+            background-color: var(--wa-color-primary);
+            color: var(--wa-color-base-white);
+        }
+
+        button.primary:hover {
+            background-color: var(--wa-color-primary-dark);
+        }
+
+        button.secondary {
+            background-color: var(--wa-color-secondary);
+            color: var(--wa-color-base-white);
+        }
+
+        button.secondary:hover {
+            background-color: var(--wa-color-secondary-dark);
+        }
+
+        button.danger {
+            background-color: var(--wa-color-danger-base);
+            color: var(--wa-color-base-white);
+        }
+
+        button.danger:hover {
+            background-color: var(--wa-color-danger-dark);
+        }
+
+        button.size-sm {
+            padding: var(--wa-size-2) var(--wa-size-3);
+            font-size: var(--wa-size-3);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: var(--wa-size-4);
+        }
+
+        .button-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--wa-size-2);
+        }
+
+        .button-icon::before {
+            content: '';
+            display: inline-block;
+            width: var(--wa-size-4);
+            height: var(--wa-size-4);
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .edit-button::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>');
+        }
+
+        .delete-button::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>');
+        }
+
+        .save-button::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>');
+        }
+
+        .cancel-button::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg>');
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <h1>Famme Products</h1>
+
+    <div class="centered-button">
+        <button class="primary" hx-get="/products/list" hx-target="#product-table" hx-swap="outerHTML">
+            Load Products
+        </button>
+    </div>
+
+    <div id="product-table">
+        <table>
+            <thead>
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Vendor</th>
+                <th>Price</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    <form hx-post="/products" hx-target="#product-table tbody" hx-swap="beforeend" class="form-grid">
+        <h2>Add New Product</h2>
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input id="title" type="text" name="title" placeholder="Enter product title" required>
+        </div>
+        <div class="form-group">
+            <label for="vendor">Vendor:</label>
+            <input id="vendor" type="text" name="vendor" placeholder="Enter vendor name" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input id="price" type="number" step="0.01" name="price" placeholder="Enter price" required>
+        </div>
+        <div class="form-group">
+            <label for="productType">Product Type:</label>
+            <input id="productType" type="text" name="productType" placeholder="Enter product type" required>
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">Image URL:</label>
+            <input id="imageUrl" type="text" name="imageUrl" placeholder="Enter image URL">
+        </div>
+        <button type="submit" class="primary">
+            Add Product
+        </button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+POST {{HOST}}/add-product
+Content-Type: application/x-www-form-urlencoded
+
+title=Test+Product&handle=test-product&vendor=TestVendor&productType=TestType&variants=[{"id":1,"title":"Default"}]
