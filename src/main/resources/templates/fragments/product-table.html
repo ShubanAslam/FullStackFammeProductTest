@@ -1,36 +1,45 @@
-<table id="product-table" th:fragment="table" xmlns:th="http://www.thymeleaf.org">
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Title</th>
-        <th>Vendor</th>
-        <th>Price</th>
-        <th>Type</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody th:fragment="tbody">
-    <tr th:each="product : ${products}" th:id="'product-' + ${product.id}" th:fragment="row">
-        <td><img th:src="${product.imageUrl}" alt="Product Image"></td>
-        <td th:text="${product.title}"></td>
-        <td th:text="${product.vendor}"></td>
-        <td th:text="${product.price}"></td>
-        <td th:text="${product.productType}"></td>
-        <td>
-            <button class="secondary size-sm button-icon edit-button" type="button"
-                    th:hx-get="@{/products/edit/{id}(id=${product.id})}"
-                    th:hx-target="'#product-' + ${product.id}"
-                    hx-swap="outerHTML">
-                Edit
-            </button>
-            <button class="danger size-sm button-icon delete-button" type="button"
-                    th:hx-delete="@{/products/{id}(id=${product.id})}"
-                    hx-confirm="Are you sure you want to delete this product?"
-                    th:hx-target="'#product-' + ${product.id}"
-                    hx-swap="outerHTML">
-                Delete
-            </button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<wa-table id="product-table" th:fragment="table" xmlns:th="http://www.thymeleaf.org" bordered striped hoverable>
+    <table>
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Vendor</th>
+            <th>Price</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody th:fragment="tbody">
+        <tr th:each="product : ${products}" th:id="'product-' + ${product.id}" th:fragment="row">
+            <td>
+                <img th:src="${product.imageUrl}" alt="Product Image" style="max-width:60px; border-radius:4px;">
+            </td>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.vendor}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.productType}"></td>
+            <td>
+                <!-- Edit -->
+                <wa-button size="sm" color="primary" variant="outline" type="button"
+                           th:hx-get="@{/products/edit/{id}(id=${product.id})}"
+                           th:hx-target="'#product-' + ${product.id}"
+                           hx-swap="outerHTML">
+                    <wa-icon name="edit"></wa-icon>
+                    Edit
+                </wa-button>
+
+                <!-- Delete -->
+                <wa-button size="sm" color="danger" variant="outline" type="button"
+                           th:hx-delete="@{/products/{id}(id=${product.id})}"
+                           hx-confirm="Are you sure you want to delete this product?"
+                           th:hx-target="'#product-' + ${product.id}"
+                           hx-swap="outerHTML">
+                    <wa-icon name="delete"></wa-icon>
+                    Delete
+                </wa-button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</wa-table>
